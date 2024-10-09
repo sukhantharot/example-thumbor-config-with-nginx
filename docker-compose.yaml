@@ -1,0 +1,32 @@
+version: '3'
+services:
+  thumbor:
+    image: ghcr.io/minimalcompact/thumbor
+    restart: on-failure
+    volumes:
+      - ../thumbor_data:/data
+      - ./docker/thumbor/.aws:/app/.aws
+    environment:
+      THUMBOR_NUM_PROCESSES: 4
+      THUMBOR_PORT: 80
+      LOADER: 'tc_aws.loaders.s3_loader'
+      SECURITY_KEY: <SECURITY_KEY>
+      TC_AWS_LOADER_BUCKET: <BUCKET>
+      TC_AWS_STORAGE_BUCKET: <Thumbor_BUCKET>
+      TC_AWS_RESULT_STORAGE_BUCKET: <Thumbor_BUCKET>
+      TC_AWS_REGION: 'auto' # if use r2 cloudflare storage, set to 'auto'
+      TC_AWS_ENDPOINT: <ENDPOINT_S3>
+      TC_AWS_ENABLE_HTTP_LOADER: 'True'
+      MAX_PIXELS: '9500000'
+      QUALITY: '80'
+      WEBP_QUALITY: '90'
+      AUTO_WEBP: 'True'
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Custom Nginx config
+    ports:
+      - "80:80"
+    depends_on:
+      - thumbor

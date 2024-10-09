@@ -1,0 +1,24 @@
+`import hmac
+ import hashlib
+ import base64
+ import urllib.parse
+
+ def generate_hmac_sha1_base64(path, key):
+     # Create HMAC-SHA1 hash
+     hmac_sha1 = hmac.new(key.encode(), path.encode(), hashlib.sha1).digest()
+
+     # Encode to base64
+     base64_hmac = base64.b64encode(hmac_sha1).decode()
+
+     # Replace characters as per PHP's strtr
+     return base64_hmac.translate(str.maketrans('/+', '_-'))
+
+ # Example usage
+ path = size <w>x<h> + path image from s3 example :'300x300/xxxx/landscape-1.webp'
+ key = <SECURITY_KEY same thumbor config>
+ result = generate_hmac_sha1_base64(path, key)
+
+ # Construct the Thumbor URL
+ thumbor_url = <pure> same nginx config : f"http://xxx.xxx.xxx/pure/{result}/{path}"
+
+ print(thumbor_url) http://xxx.xxx.xxx/pure/lT5cVJbEL3IfRiASo3fQdRUUCRQ/300x300/xxxx/landscape-1.webp`
