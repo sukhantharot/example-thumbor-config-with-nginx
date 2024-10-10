@@ -23,7 +23,7 @@ services:
       AUTO_WEBP: 'True'
 
   nginx:
-    image: nginx:latest
+    image: nginx:alpine
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/conf.d:/etc/nginx/conf.d
